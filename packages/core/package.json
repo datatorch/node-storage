@@ -1,0 +1,24 @@
+{
+  "name": "@storage/core",
+  "version": "0.0.0",
+  "description": "Local storage implementation and storage interfaces",
+  "author": "Justin Brooks <justin@datatorch.io>",
+  "homepage": "https://github.com/datatorch/node-storage#readme",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datatorch/node-storage.git"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/datatorch/node-storage/issues"
+  },
+  "dependencies": {
+    "globby": "^11.0.0"
+  }
+}
