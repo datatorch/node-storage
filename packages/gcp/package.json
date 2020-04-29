@@ -1,7 +1,7 @@
 {
-  "name": "storage-core",
+  "name": "storage-gcp",
   "version": "0.1.5",
-  "description": "Local storage implementation and storage interfaces",
+  "description": "Google cloud storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
   "license": "MIT",
@@ -18,8 +18,8 @@
   "bugs": {
     "url": "https://github.com/datatorch/node-storage/issues"
   },
+  "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
   "dependencies": {
-    "globby": "^11.0.0"
-  },
-  "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3"
+    "storage-core": "^0.1.5"
+  }
 }
