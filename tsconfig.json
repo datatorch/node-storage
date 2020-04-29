@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    /* Basic Options */
     "composite": true,
     "target": "ES2020",
     "module": "commonjs",
@@ -9,7 +8,6 @@
     "declarationMap": true,
     "moduleResolution": "node",
 
-    /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -21,13 +19,18 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitThis": true,
 
-    /* Experimental Options */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "traceResolution": true,
+    "removeComments": true,
 
-    /* Advanced Options */
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2017", "esnext.asynciterable"],
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["types/*"]
+    }
   },
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }
