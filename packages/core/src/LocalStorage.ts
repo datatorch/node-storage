@@ -3,25 +3,22 @@ import fs from 'fs'
 import pathModule from 'path'
 import globby from 'globby'
 
-import Storage from './Storage'
+import { Storage } from './Storage'
 import { LocalStorageOptions } from './LocalStorageOptions'
 
-export default class LocalStorage extends Storage {
-  public readonly path: string
-
+export class LocalStorage extends Storage<LocalStorageOptions> {
   constructor(options: LocalStorageOptions) {
     super(options)
-    this.path = options.path
     this.initialize()
   }
 
   async initialize(): Promise<void> {
     const [, folder] = await Promise.all([
       fs.promises.access(
-        this.path,
+        this.options.path,
         fs.constants.F_OK | fs.constants.R_OK | fs.constants.W_OK
       ),
-      fs.promises.lstat(this.path)
+      fs.promises.lstat(this.options.path)
     ])
     if (!folder.isDirectory()) throw new Error('Path is not a directory')
   }
@@ -62,6 +59,6 @@ export default class LocalStorage extends Storage {
   }
 
   fullPath(path?: string): string {
-    return path ? pathModule.join(this.path, path) : this.path
+    return path ? pathModule.join(this.options.path, path) : this.options.path
   }
 }

@@ -1,10 +1,10 @@
 import { WriteStream, ReadStream } from 'fs'
-import StorageOptions from './StorageOptions'
+import { StorageOptions } from './StorageOptions'
 
-export default abstract class StorageDriver {
-  public readonly options: StorageOptions
+export abstract class Storage<O extends StorageOptions> {
+  public readonly options: O
 
-  constructor(options: StorageOptions) {
+  constructor(options: O) {
     this.options = options
   }
 

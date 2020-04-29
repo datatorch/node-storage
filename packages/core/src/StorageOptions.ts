@@ -1,1 +1,1 @@
-export default interface StorageOptions {}
+export interface StorageOptions {}

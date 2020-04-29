@@ -3,7 +3,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "release": "lerna publish"
   },
   "devDependencies": {
     "@types/node": "^13.13.4",
