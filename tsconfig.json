@@ -18,10 +18,13 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitThis": true,
 
     /* Experimental Options */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "traceResolution": true,
 
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true
