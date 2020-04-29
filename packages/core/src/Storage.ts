@@ -1,7 +1,7 @@
 import { WriteStream, ReadStream } from 'fs'
 import { StorageOptions } from './StorageOptions'
 
-export abstract class Storage<O extends StorageOptions> {
+export abstract class Storage<O extends StorageOptions = any> {
   public readonly options: O
 
   constructor(options: O) {
