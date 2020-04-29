@@ -1,6 +1,6 @@
 {
   "name": "storage-gcp",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Google cloud storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
