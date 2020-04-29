@@ -43,8 +43,8 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
     await this.bucket.file(filePath).save(data)
   }
 
-  async deleteFile(_filePath: string): Promise<void> {
-    await this.bucket.file(name).delete()
+  async deleteFile(filePath: string): Promise<void> {
+    await this.bucket.file(filePath).delete()
   }
 
   createWriteStream(
