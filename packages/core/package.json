@@ -1,6 +1,6 @@
 {
   "name": "@storage/core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Local storage implementation and storage interfaces",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
@@ -20,5 +20,6 @@
   },
   "dependencies": {
     "globby": "^11.0.0"
-  }
+  },
+  "gitHead": "1c562d750982d3d9a60da1db32ceec551067f822"
 }
