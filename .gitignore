@@ -26,3 +26,5 @@ node_modules/
 
 # Intellij Configuration Files
 .idea/
+
+data/

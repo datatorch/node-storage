@@ -1,4 +1,3 @@
-import { ReadStream, WriteStream } from 'fs'
 import { Storage } from 'storage-core'
 import {
   Storage as GoogleStorage,
@@ -8,6 +7,7 @@ import {
 } from '@google-cloud/storage'
 
 import { GoogleCloudStorageOptions } from './GoogleCloudStorageOptions'
+import { Readable } from 'stream'
 
 export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
   googleStorage: GoogleStorage
@@ -30,8 +30,9 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
     return files.map(f => f.name)
   }
 
-  getSize(_path?: string | undefined): Promise<number> {
-    throw new Error('Method not implemented.')
+  async getFileSize(filePath: string): Promise<number> {
+    const stat = (await this.bucket.file(filePath).getMetadata()).find(r => r)
+    return stat?.size || 0
   }
 
   async readFile(filePath: string): Promise<Buffer> {
@@ -47,19 +48,20 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
     await this.bucket.file(filePath).delete()
   }
 
-  createWriteStream(
+  async createWriteStream(
     filePath: string,
-    options?: CreateWriteStreamOptions
-  ): WriteStream {
-    return this.bucket.file(filePath).createWriteStream(options) as WriteStream
+    options?: { stream?: Readable } & CreateWriteStreamOptions
+  ) {
+    const stream = options?.stream || new Readable()
+    delete options?.stream
+    const write = this.bucket.file(filePath).createWriteStream(options)
+    stream.pipe(write)
+    return stream
   }
 
-  createReadStream(
-    filePath: string,
-    options?: CreateReadStreamOptions
-  ): ReadStream {
+  async createReadStream(filePath: string, options?: CreateReadStreamOptions) {
     const file = this.bucket.file(filePath)
-    return file.createReadStream(options) as ReadStream
+    return file.createReadStream(options)
   }
 
   async makeDir(_path: string): Promise<void> {}

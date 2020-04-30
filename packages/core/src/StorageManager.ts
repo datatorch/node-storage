@@ -7,7 +7,7 @@ import { getStorageFactory } from './StorageFactory'
 const DEFAULT_MAX_SIZE = 1000
 const defaultSizeCalculator = () => 1
 
-type StorageManagerOptions = {
+export type StorageManagerOptions = {
   maxSize?: number
   sizeCalculator?: (value: Storage, key: string) => number
 }

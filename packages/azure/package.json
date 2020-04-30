@@ -1,5 +1,5 @@
 {
-  "name": "storage-gcp",
+  "name": "storage-azure",
   "version": "0.1.13",
   "description": "Google cloud storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
@@ -23,7 +23,8 @@
   ],
   "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
   "dependencies": {
-    "@google-cloud/storage": "^4.7.0",
+    "@azure/storage-blob": "^12.1.1",
+    "azure-storage": "^2.10.3",
     "storage-core": "^0.1.13"
   }
 }

@@ -1,5 +1,5 @@
 import { Storage } from './Storage'
-import { StorageOptions } from './StorageOptions'
+import { StorageOptions, FactoryStorageOption } from './StorageOptions'
 import { LocalStorage } from './LocalStorage'
 
 class StorageFactory {
@@ -16,7 +16,9 @@ class StorageFactory {
     this.map.set(type, StorageType)
   }
 
-  create<O extends StorageOptions>(options: O & { type: string }): Storage<O> {
+  create<O extends StorageOptions>(
+    options: FactoryStorageOption<O>
+  ): Storage<O> {
     const StorageType = this.map.get(options.type)
     if (!StorageType)
       throw new Error(`'${options.type}' has not been registered.`)

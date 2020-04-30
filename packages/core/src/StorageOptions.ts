@@ -1,9 +1,9 @@
 export interface StorageOptions {}
 
-export type FactorStorageOption<O extends StorageOptions = any> = O & {
+export type FactoryStorageOption<O extends StorageOptions = any> = O & {
   type: string
 }
 
 export type ManagerStorageOption<
   O extends StorageOptions = any
-> = FactorStorageOption<O> & { id: string }
+> = FactoryStorageOption<O> & { id: string }

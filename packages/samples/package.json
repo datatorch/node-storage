@@ -1,0 +1,24 @@
+{
+  "name": "samples",
+  "version": "0.1.13",
+  "description": "Samples",
+  "author": "Justin Brooks <jsbroks@gmail.com>",
+  "homepage": "https://github.com/datatorch/node-storage#readme",
+  "private": true,
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datatorch/node-storage.git"
+  },
+  "dependencies": {
+    "ts-node": "^8.9.1",
+    "storage-core": "^0.1.13",
+    "storage-gcp": "^0.1.13"
+  }
+}

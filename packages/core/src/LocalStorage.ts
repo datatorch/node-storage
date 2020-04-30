@@ -5,6 +5,7 @@ import globby from 'globby'
 
 import { Storage } from './Storage'
 import { LocalStorageOptions } from './LocalStorageOptions'
+import { Readable } from 'stream'
 
 export class LocalStorage extends Storage<LocalStorageOptions> {
   constructor(options: LocalStorageOptions) {
@@ -30,6 +31,11 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
     return globby(`${fullPath}/**/*`, { onlyFiles: true })
   }
 
+  async getFileSize(filePath: string): Promise<number> {
+    const stat = await fs.promises.stat(this.fullPath(filePath))
+    return stat.size
+  }
+
   async readFile(filePath: string): Promise<Buffer> {
     const fullPath = this.fullPath(filePath)
     return fs.promises.readFile(fullPath)
@@ -50,11 +56,14 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
     await fs.promises.mkdir(this.fullPath(dir), { recursive: true })
   }
 
-  createWriteStream(path: string, options?: any) {
-    return fs.createWriteStream(this.fullPath(path), options)
+  async createWriteStream(path: string, options: { stream?: Readable }) {
+    const stream = options?.stream || new Readable()
+    await this.makeDir(path)
+    stream.pipe(fs.createWriteStream(this.fullPath(path)))
+    return stream
   }
 
-  createReadStream(path: string, options?: any) {
+  async createReadStream(path: string, options?: any) {
     return fs.createReadStream(this.fullPath(path), options)
   }
 

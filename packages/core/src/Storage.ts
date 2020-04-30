@@ -1,4 +1,4 @@
-import { WriteStream, ReadStream } from 'fs'
+import { Readable } from 'stream'
 import { StorageOptions } from './StorageOptions'
 
 export abstract class Storage<O extends StorageOptions = any> {
@@ -14,7 +14,7 @@ export abstract class Storage<O extends StorageOptions = any> {
    * @remarks
    * Typically used to check for permissions and/or validate connection
    */
-  abstract async initialize(): Promise<void>
+  abstract initialize(): Promise<void>
 
   /**
    * Terminate storage setup and releases all resources
@@ -22,25 +22,27 @@ export abstract class Storage<O extends StorageOptions = any> {
    * @remarks
    * Typically used to terminate connections
    */
-  abstract async terminate(): Promise<void>
+  abstract terminate(): Promise<void>
 
   /**
    * Returns all files in storage
    */
-  abstract async getFilePaths(path?: string): Promise<string[]>
+  abstract getFilePaths(path?: string): Promise<string[]>
 
-  abstract async readFile(filePath: string): Promise<Buffer>
+  abstract readFile(filePath: string): Promise<Buffer>
 
-  abstract async writeFile(
+  abstract writeFile(filePath: string, data: string | Buffer): Promise<void>
+
+  abstract deleteFile(filePath: string): Promise<void>
+
+  abstract getFileSize(filePath: string): Promise<number>
+
+  abstract createWriteStream(
     filePath: string,
-    data: string | Buffer
-  ): Promise<void>
+    options?: { stream?: Readable }
+  ): Promise<Readable>
 
-  abstract async deleteFile(filePath: string): Promise<void>
-
-  abstract createWriteStream(filePath: string, options?: any): WriteStream
-
-  abstract createReadStream(filePath: string, options?: any): ReadStream
+  abstract createReadStream(filePath: string): Promise<Readable>
 
   abstract makeDir(path: string): Promise<void>
 }
