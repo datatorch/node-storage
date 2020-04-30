@@ -4775,6 +4775,13 @@ rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   dependencies:
     glob "^7.1.3"
 
+rimraf@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
+  integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
+  dependencies:
+    glob "^7.1.3"
+
 run-async@^2.2.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.4.1.tgz#8440eccf99ea3e70bd409d49aab88e10c189a455"
@@ -5085,6 +5092,23 @@ static-extend@^0.1.1:
   dependencies:
     define-property "^0.2.5"
     object-copy "^0.1.0"
+
+storage-core@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/storage-core/-/storage-core-0.1.13.tgz#967b87503bebde97a278af6dd8f65888ef86ab4e"
+  integrity sha512-VY718AUkGz/r67NWdpi3MXHNGbFTuwpPAS2aB0BsZvORdWnRmfjFUkvCz4DNOmPSR/hxr74b1m3MJrla95+76A==
+  dependencies:
+    "@types/lru-cache" "^5.1.0"
+    globby "^11.0.0"
+    lru-cache "^5.1.1"
+
+storage-gcp@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/storage-gcp/-/storage-gcp-0.1.13.tgz#77593e014774f7144cec5854a8d9d18432bdd1db"
+  integrity sha512-itwkNo1yz6pfavGsL68iEUM5Kv2I36xgscyapR/1NXOoWHKFb8EeNWC9bjDn8qXGG6zLCv1v7VIJlPAedA+/bw==
+  dependencies:
+    "@google-cloud/storage" "^4.7.0"
+    storage-core "^0.1.13"
 
 stream-each@^1.1.0:
   version "1.2.3"
