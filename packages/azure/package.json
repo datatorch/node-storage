@@ -1,6 +1,6 @@
 {
   "name": "storage-azure",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Google cloud storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@azure/storage-blob": "^12.1.1",
     "azure-storage": "^2.10.3",
-    "storage-core": "^0.2.0"
+    "storage-core": "^0.2.1"
   },
   "keywords": [
     "storage",
