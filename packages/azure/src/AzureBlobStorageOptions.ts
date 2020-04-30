@@ -1,7 +1,7 @@
-import { StorageOptions } from "storage-core";
+import { StorageOptions } from 'storage-core'
 
 export interface AzureBlobStorageOptions extends StorageOptions {
-    container: string
-    accountName: string
-    accountKey: string
+  container: string
+  accountName: string
+  accountKey: string
 }

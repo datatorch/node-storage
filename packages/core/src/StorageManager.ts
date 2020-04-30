@@ -17,7 +17,7 @@ const DEFAULT_MANAGER: StorageManagerOptions = {
   sizeCalculator: defaultSizeCalculator
 }
 
-export class StorageManager {
+export default class StorageManager {
   /** Cache map */
   private storages: LRUCache<string, Storage>
 
