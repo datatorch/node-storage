@@ -12,7 +12,7 @@
     "url": "git+https://github.com/datatorch/node-storage.git"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
