@@ -1,7 +1,7 @@
 import LRUCache from 'lru-cache'
 
 import { Storage, StorageOptions } from './Storage'
-import { getStorageFactory, FactoryStorageOption } from './StorageFactory'
+import { getStorageFactory, FactoryStorageOption } from './Factory'
 
 const DEFAULT_MAX_SIZE = 1000
 const defaultSizeCalculator = () => 1
