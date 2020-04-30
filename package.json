@@ -6,7 +6,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "clean": "rimraf packages/**/dist packages/**/*.tsbuildinfo",
-    "release": "yarn build && lerna publish"
+    "release": "yarn clean && yarn build && lerna publish"
   },
   "devDependencies": {
     "@types/node": "^13.13.4",
