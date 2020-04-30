@@ -4,4 +4,8 @@ export { Storage } from './Storage'
 export { StorageOptions } from './StorageOptions'
 
 export { getStorageFactory } from './StorageFactory'
-export { getStorageManager, StorageManagerOptions } from './StorageManager'
+export {
+  getStorageManager,
+  StorageManager,
+  StorageManagerOptions
+} from './StorageManager'

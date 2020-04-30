@@ -1,11 +1,4 @@
-# `samples`
+# Samples
 
-> TODO: description
-
-## Usage
-
-```
-const samples = require('samples');
-
-// TODO: DEMONSTRATE API
-```
+`ts` folder contains typescript samples.
+`js` folder contains javascript samples.

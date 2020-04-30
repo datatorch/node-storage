@@ -17,13 +17,16 @@ const DEFAULT_MANAGER: StorageManagerOptions = {
   sizeCalculator: defaultSizeCalculator
 }
 
-class StorageManager {
+export class StorageManager {
   /** Cache map */
   private storages: LRUCache<string, Storage>
 
   constructor(options: StorageManagerOptions = DEFAULT_MANAGER) {
     const { maxSize, sizeCalculator } = options
-    this.storages = new LRUCache({ max: maxSize, length: sizeCalculator })
+    this.storages = new LRUCache({
+      max: maxSize,
+      length: sizeCalculator
+    })
   }
 
   /**
