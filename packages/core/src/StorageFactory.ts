@@ -1,8 +1,11 @@
-import { Storage } from './Storage'
-import { StorageOptions, FactoryStorageOption } from './StorageOptions'
+import { Storage, StorageOptions } from './Storage'
 import { LocalStorage } from './LocalStorage'
 
-class StorageFactory {
+export type FactoryStorageOption<O extends StorageOptions = any> = O & {
+  type: string
+}
+
+export class StorageFactory {
   private map = new Map<string, new (options: any) => Storage<any>>()
 
   constructor() {

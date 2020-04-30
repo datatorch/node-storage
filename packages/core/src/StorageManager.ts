@@ -1,11 +1,14 @@
 import LRUCache from 'lru-cache'
 
-import { Storage } from './Storage'
-import { StorageOptions, ManagerStorageOption } from './StorageOptions'
-import { getStorageFactory } from './StorageFactory'
+import { Storage, StorageOptions } from './Storage'
+import { getStorageFactory, FactoryStorageOption } from './StorageFactory'
 
 const DEFAULT_MAX_SIZE = 1000
 const defaultSizeCalculator = () => 1
+
+export type ManagerStorageOption<
+  O extends StorageOptions = any
+> = FactoryStorageOption<O> & { id: string }
 
 export type StorageManagerOptions = {
   maxSize?: number

@@ -3,9 +3,13 @@ import * as fs from 'fs'
 import pathModule from 'path'
 import globby from 'globby'
 
-import { Storage } from './Storage'
-import { LocalStorageOptions } from './LocalStorageOptions'
 import { Readable } from 'stream'
+
+import { Storage, StorageOptions } from './Storage'
+
+export interface LocalStorageOptions extends StorageOptions {
+  path: string
+}
 
 export class LocalStorage extends Storage<LocalStorageOptions> {
   constructor(options: LocalStorageOptions) {
