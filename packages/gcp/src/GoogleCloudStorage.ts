@@ -20,9 +20,6 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
     this.bucket = this.googleStorage.bucket(bucket)
   }
 
-  async initialize(): Promise<void> {}
-  async terminate(): Promise<void> {}
-
   async getFilePaths(path?: string | undefined): Promise<string[]> {
     const [files] = await this.bucket.getFiles({
       directory: path

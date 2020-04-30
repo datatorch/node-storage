@@ -9,22 +9,6 @@ export abstract class Storage<O extends StorageOptions = any> {
   }
 
   /**
-   * Performs initialization to the storage type.
-   *
-   * @remarks
-   * Typically used to check for permissions and/or validate connection
-   */
-  abstract initialize(): Promise<void>
-
-  /**
-   * Terminate storage setup and releases all resources
-   *
-   * @remarks
-   * Typically used to terminate connections
-   */
-  abstract terminate(): Promise<void>
-
-  /**
    * Returns all files in storage
    */
   abstract getFilePaths(path?: string): Promise<string[]>

@@ -24,10 +24,6 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     this.containerClient = this.blobClient.getContainerClient(options.container)
   }
 
-  async initialize(): Promise<void> {}
-
-  async terminate(): Promise<void> {}
-
   async getFileSize(path: string): Promise<number> {
     const props = await this.containerClient
       .getBlockBlobClient(path)
