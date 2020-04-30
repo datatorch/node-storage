@@ -27,7 +27,9 @@
     "storage-core": "^0.2.1"
   },
   "keywords": [
+    "node",
     "storage",
-    "gcp"
+    "gcp",
+    "files"
   ]
 }
