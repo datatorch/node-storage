@@ -1,6 +1,6 @@
 {
   "name": "samples",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Samples",
   "author": "Justin Brooks <jsbroks@gmail.com>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
@@ -10,8 +10,8 @@
     "url": "git+https://github.com/datatorch/node-storage.git"
   },
   "dependencies": {
-    "storage-core": "^0.2.8",
-    "storage-gcp": "^0.2.8",
+    "storage-core": "^0.2.9",
+    "storage-gcp": "^0.2.9",
     "ts-node": "^8.9.1"
   }
 }
