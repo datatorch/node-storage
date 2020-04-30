@@ -25,5 +25,9 @@
   "dependencies": {
     "@google-cloud/storage": "^4.7.0",
     "storage-core": "^0.2.0"
-  }
+  },
+  "keywords": [
+    "storage",
+    "gcp"
+  ]
 }

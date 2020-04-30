@@ -54,7 +54,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
   }
 
   async createWriteStream(filePath: string, options?: { stream?: Readable }) {
-    const stream = options?.stream || new Readable()
+    const stream = (options && options.stream) || new Readable()
     this.containerClient.getBlockBlobClient(filePath).uploadStream(stream)
     return stream
   }

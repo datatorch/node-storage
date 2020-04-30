@@ -52,7 +52,7 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
     filePath: string,
     options?: { stream?: Readable } & CreateWriteStreamOptions
   ) {
-    const stream = options?.stream || new Readable()
+    const stream = (options && options.stream) || new Readable()
     delete options?.stream
     const write = this.bucket.file(filePath).createWriteStream(options)
     stream.pipe(write)

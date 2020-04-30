@@ -57,7 +57,7 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
   }
 
   async createWriteStream(path: string, options: { stream?: Readable }) {
-    const stream = options?.stream || new Readable()
+    const stream = (options && options.stream) || new Readable()
     await this.makeDir(path)
     stream.pipe(fs.createWriteStream(this.fullPath(path)))
     return stream
