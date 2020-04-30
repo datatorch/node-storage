@@ -1,5 +1,6 @@
 import { Readable } from 'stream'
-import { StorageOptions } from './StorageOptions'
+
+export interface StorageOptions {}
 
 export abstract class Storage<O extends StorageOptions = any> {
   public readonly options: O
