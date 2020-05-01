@@ -1,4 +1,4 @@
-import { Readable } from 'stream'
+import { Readable, Writable } from 'stream'
 
 export interface StorageOptions {}
 
@@ -22,10 +22,7 @@ export abstract class Storage<O extends StorageOptions = any> {
 
   abstract getFileSize(filePath: string): Promise<number>
 
-  abstract createWriteStream(
-    filePath: string,
-    options?: { stream?: Readable }
-  ): Promise<Readable>
+  abstract createWriteStream(filePath: string): Promise<Writable>
 
   abstract createReadStream(filePath: string): Promise<Readable>
 

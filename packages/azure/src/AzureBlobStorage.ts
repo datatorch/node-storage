@@ -5,7 +5,7 @@ import {
   ContainerClient
 } from '@azure/storage-blob'
 import { AzureBlobStorageOptions } from './AzureBlobStorageOptions'
-import { Readable } from 'stream'
+import { Readable, PassThrough } from 'stream'
 
 export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
   blobClient: BlobServiceClient
@@ -49,8 +49,8 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     await this.containerClient.getBlockBlobClient(filePath).delete()
   }
 
-  async createWriteStream(filePath: string, options?: { stream?: Readable }) {
-    const stream = (options && options.stream) || new Readable()
+  async createWriteStream(filePath: string) {
+    const stream = new PassThrough()
     this.containerClient.getBlockBlobClient(filePath).uploadStream(stream)
     return stream
   }

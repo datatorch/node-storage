@@ -7,7 +7,6 @@ import {
 } from '@google-cloud/storage'
 
 import { GoogleCloudStorageOptions } from './GoogleCloudStorageOptions'
-import { Readable } from 'stream'
 
 export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
   googleStorage: GoogleStorage
@@ -29,7 +28,7 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
 
   async getFileSize(filePath: string): Promise<number> {
     const stat = (await this.bucket.file(filePath).getMetadata()).find(r => r)
-    return stat?.size || 0
+    return (stat && stat.size) || 0
   }
 
   async readFile(filePath: string): Promise<Buffer> {
@@ -47,13 +46,9 @@ export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
 
   async createWriteStream(
     filePath: string,
-    options?: { stream?: Readable } & CreateWriteStreamOptions
+    options?: CreateWriteStreamOptions
   ) {
-    const stream = (options && options.stream) || new Readable()
-    delete options?.stream
-    const write = this.bucket.file(filePath).createWriteStream(options)
-    stream.pipe(write)
-    return stream
+    return this.bucket.file(filePath).createWriteStream(options)
   }
 
   async createReadStream(filePath: string, options?: CreateReadStreamOptions) {

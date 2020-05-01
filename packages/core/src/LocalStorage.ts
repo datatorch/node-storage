@@ -3,8 +3,6 @@ import * as fs from 'fs'
 import pathModule from 'path'
 import globby from 'globby'
 
-import { Readable } from 'stream'
-
 import { Storage, StorageOptions } from './Storage'
 
 export interface LocalStorageOptions extends StorageOptions {
@@ -60,11 +58,9 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
     await fs.promises.mkdir(this.fullPath(dir), { recursive: true })
   }
 
-  async createWriteStream(path: string, options: { stream?: Readable }) {
-    const stream = (options && options.stream) || new Readable()
+  async createWriteStream(path: string) {
     await this.makeDir(path)
-    stream.pipe(fs.createWriteStream(this.fullPath(path)))
-    return stream
+    return fs.createWriteStream(this.fullPath(path))
   }
 
   async createReadStream(path: string, options?: any) {
