@@ -50,6 +50,9 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
   }
 
   async createWriteStream(filePath: string) {
+    // Failed if file is not already created
+    await this.writeFile(filePath, '')
+
     const stream = new PassThrough()
     this.containerClient.getBlockBlobClient(filePath).uploadStream(stream)
     return stream
