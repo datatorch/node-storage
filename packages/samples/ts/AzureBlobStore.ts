@@ -31,6 +31,7 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   const ls2 = await getStorageManager().create(config)
   await ls2.writeFile('azure-write/test2.txt', 'using storage create')
   console.log(await ls2.readFile('azure-write/test2.txt'))
+  console.log(await ls2.getFileSize('azure-write/test2.txt'))
 
   // Get storage from cache
   const ls3 = getStorageManager().get('example-id')

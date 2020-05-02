@@ -1,7 +1,7 @@
 {
-  "name": "storage-azure",
+  "name": "storage-aws",
   "version": "0.3.1",
-  "description": "Azure blob storage implementation",
+  "description": "AWS storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
   "license": "MIT",
@@ -23,13 +23,14 @@
   ],
   "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
   "dependencies": {
-    "@azure/storage-blob": "^12.1.1",
+    "aws-sdk": "^2.668.0",
     "storage-core": "^0.3.0"
   },
   "keywords": [
     "node",
     "storage",
-    "azure",
+    "aws",
+    "s3",
     "files"
   ]
 }
