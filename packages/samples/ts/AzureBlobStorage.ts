@@ -1,11 +1,12 @@
 import { AzureBlobStorage } from 'storage-azure'
+
+import { getStorageManager, getStorageFactory } from 'storage-core'
 /**
  * Samples using Azure Storage
  *  - Read/Write
  *  - Read/Write using StorageManager
  *  - WriteStream
  */
-import { getStorageManager, getStorageFactory } from 'storage-core'
 ;(async () => {
   const config = {
     id: 'example-id',
