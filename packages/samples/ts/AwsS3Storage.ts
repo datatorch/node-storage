@@ -15,16 +15,16 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
     secretAccessKey: process.env.SECRET_KEY || ''
   }
 
-  // Create local storage
+  // Create aws s3 storage
   const ls = new AwsS3Storage(config)
 
   // Write data to test.txt
-  await ls.writeFile('aws-write/test.txt', 'using azure storage')
+  await ls.writeFile('aws-write/test.txt', 'using aws storage')
   console.log(await ls.readFile('aws-write/test.txt'))
 
   // Using storage manager
 
-  // Register azure storage
+  // Register aws storage
   getStorageFactory().register('aws-s3', AwsS3Storage)
 
   // Create will also insert storage into cache
