@@ -1,6 +1,6 @@
 {
   "name": "storage-azure",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Azure blob storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
@@ -24,7 +24,7 @@
   "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
   "dependencies": {
     "@azure/storage-blob": "^12.1.1",
-    "storage-core": "^0.3.3"
+    "storage-core": "^0.4.0"
   },
   "keywords": [
     "node",
