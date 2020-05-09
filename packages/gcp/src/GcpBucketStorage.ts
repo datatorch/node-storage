@@ -24,8 +24,6 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
       }
     }
 
-    console.log(gcpOptions)
-
     this.googleStorage = new GoogleStorage(gcpOptions)
 
     const { bucket } = this.options
