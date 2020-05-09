@@ -1,2 +1,2 @@
-export { GoogleCloudStorage } from './GoogleCloudStorage'
-export { GoogleCloudStorageOptions } from './GoogleCloudStorageOptions'
+export { GcpBucketStorage } from './GcpBucketStorage'
+export { GcpBucketStorageOptions } from './GcpBucketStorageOptions'

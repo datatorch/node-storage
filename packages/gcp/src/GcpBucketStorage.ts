@@ -3,18 +3,31 @@ import {
   Storage as GoogleStorage,
   Bucket as GoogleBucket,
   CreateReadStreamOptions,
-  CreateWriteStreamOptions
+  CreateWriteStreamOptions,
+  StorageOptions
 } from '@google-cloud/storage'
 
-import { GoogleCloudStorageOptions } from './GoogleCloudStorageOptions'
+import { GcpBucketStorageOptions } from './GcpBucketStorageOptions'
 
-export class GoogleCloudStorage extends Storage<GoogleCloudStorageOptions> {
+export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   googleStorage: GoogleStorage
   bucket: GoogleBucket
 
-  constructor(options: GoogleCloudStorageOptions) {
+  constructor(options: GcpBucketStorageOptions) {
     super(options)
-    this.googleStorage = new GoogleStorage(this.options)
+
+    const gcpOptions: StorageOptions = {
+      ...options,
+      credentials: {
+        client_email: options.clientEmail,
+        private_key: options.privateKey
+      }
+    }
+
+    console.log(gcpOptions)
+
+    this.googleStorage = new GoogleStorage(gcpOptions)
+
     const { bucket } = this.options
     this.bucket = this.googleStorage.bucket(bucket)
   }
