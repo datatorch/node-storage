@@ -1,7 +1,8 @@
 # Node File Storage
 
-In many applications the ability dynamically change storage is a must. These
-packages provides a implementation for `Storage` to standard common functions.
+In many applications the ability to dynamically change or read files from
+different storage providers is a must. These packages provides a implementation
+for `Storage` to standardize common functions.
 
 This repository contains the core class along with implementations.
 
@@ -13,16 +14,16 @@ Install the packages you need:
 
 ```sh
 # Local Storage
-$ yarn install storage-core
+$ yarn add storage-core
 
 # Azure Storage
-$ yarn install storage-azure
+$ yarn add storage-azure
 
 # AWS Storage
-$ yarn install storage-aws
+$ yarn add storage-aws
 
 # Google Cloud Storage
-$ yarn install storage-gcp
+$ yarn add storage-gcp
 ```
 
 Create a storage instance with the required configuration and write to it.
