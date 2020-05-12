@@ -18,7 +18,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
       options.accountKey
     )
     this.blobClient = new BlobServiceClient(
-      `https://${options.accountName}.blob.core.windows.net`,
+      options.endpoint || `https://${options.accountName}.blob.core.windows.net`,
       credentials
     )
     this.containerClient = this.blobClient.getContainerClient(options.container)
