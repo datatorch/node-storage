@@ -41,7 +41,6 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
       isFile: false,
       raw: b
     }))
-
     const files: ListResult[] = blobItems.map((b: any) => ({
       name: pathModule.basename(b.name),
       path: b.name,

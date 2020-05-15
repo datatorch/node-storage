@@ -52,4 +52,8 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   for await (let path of ls.getFilesStream('aws-write')) {
     console.log(path.name)
   }
+
+  for (let result of await ls.getTopLevel('aws-write')) {
+    console.log(`${result.isFile} | ${result.path}`)
+  }
 })()

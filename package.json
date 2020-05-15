@@ -6,6 +6,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "clean": "rimraf packages/**/dist packages/**/*.tsbuildinfo",
+    "update": "yarn upgrade-interactive --latest",
     "release": "yarn clean && yarn build && lerna publish"
   },
   "devDependencies": {

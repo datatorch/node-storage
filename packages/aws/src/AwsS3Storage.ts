@@ -1,9 +1,20 @@
 import { Storage, FilesReadable, ListResult } from 'storage-core'
 import { S3, AWSError } from 'aws-sdk'
+import pathModule from 'path'
 
 import { Readable, PassThrough, Writable } from 'stream'
 import { AwsS3StorageOptions } from './AwsS3StorageOptions'
 import { PromiseResult } from 'aws-sdk/lib/request'
+
+const formatContent = (f: S3.Object) => ({
+  path: f.Key || '',
+  name: pathModule.basename(f.Key || ''),
+  size: f.Size,
+  updatedAt: f.LastModified,
+  md5Hash: f.ETag,
+  isFile: true,
+  raw: f as object
+})
 
 export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
   s3: S3
@@ -13,8 +24,35 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
     this.s3 = new S3({ ...options })
   }
 
-  getTopLevel(_?: string): Promise<ListResult[]> {
-    throw new Error('Method not implemented.')
+  async getTopLevel(path?: string): Promise<ListResult[]> {
+    const request = await this.s3
+      .listObjectsV2({
+        Bucket: this.options.bucket,
+        Prefix: path ? `${path}/` : '',
+        Delimiter: '/'
+      })
+      .promise()
+
+    const { CommonPrefixes, Contents } = request
+
+    const dirs: ListResult[] =
+      (CommonPrefixes &&
+        CommonPrefixes.map(p => ({
+          name: pathModule.basename(p.Prefix || ''),
+          path: (p.Prefix || '').slice(0, -1),
+          isFile: false,
+          raw: p
+        }))) ||
+      []
+
+    const files: ListResult[] =
+      (Contents &&
+        Contents.filter(c => c.Key && c.Key[c.Key.length - 1] !== '/').map(c =>
+          formatContent(c)
+        )) ||
+      []
+
+    return dirs.concat(files)
   }
 
   getFilesStream(path?: string): Readable {
@@ -34,17 +72,11 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
 
       ContinuationToken = request.NextContinuationToken
       const contents = request.Contents
-
       return (
         contents &&
-        contents.map(f => ({
-          path: <string>f.Key,
-          name: <string>f.Key,
-          size: f.Size,
-          updatedAt: f.LastModified,
-          md5Hash: f.ETag,
-          raw: f as object
-        }))
+        contents
+          .filter(c => c.Key && c.Key[c.Key.length - 1] !== '/')
+          .map(f => formatContent(f))
       )
     })
   }
