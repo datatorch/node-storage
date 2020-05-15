@@ -33,9 +33,9 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
 
   async getTopLevel(path?: string): Promise<ListResult[]> {
     const fullPath = this.fullPath(path)
-    console.log(fullPath)
     const files: any[] = await globby(`${fullPath}/*`, {
       onlyFiles: false,
+      onlyDirectories: false,
       objectMode: true
     })
     return files.map(f => ({
