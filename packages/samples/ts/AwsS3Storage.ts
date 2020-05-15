@@ -39,9 +39,17 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   console.log(await ls3.readFile('aws-write/test3.txt'))
 
   const ws = await ls3.createWriteStream('aws-write/stream.txt')
+
   ws.write('writing\n')
   ws.write('using\n')
   ws.write('a\n')
   ws.write('stream\n')
   ws.end()
+
+  await new Promise(resolve => ws.on('finish', () => resolve()))
+
+  // Read created files from directory
+  for await (let path of ls.getFilesStream('aws-write')) {
+    console.log(path.name)
+  }
 })()

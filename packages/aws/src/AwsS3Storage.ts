@@ -1,8 +1,9 @@
-import { Storage } from 'storage-core'
-import { S3 } from 'aws-sdk'
+import { Storage, FilesReadable } from 'storage-core'
+import { S3, AWSError } from 'aws-sdk'
 
 import { Readable, PassThrough, Writable } from 'stream'
 import { AwsS3StorageOptions } from './AwsS3StorageOptions'
+import { PromiseResult } from 'aws-sdk/lib/request'
 
 export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
   s3: S3
@@ -12,8 +13,39 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
     this.s3 = new S3({ ...options })
   }
 
-  getFilePaths(_?: string | undefined): Promise<string[]> {
+  getFiles(_?: string | undefined): Promise<string[]> {
     throw new Error('Method not implemented.')
+  }
+
+  getFilesStream(path?: string): Readable {
+    let request: PromiseResult<S3.ListObjectsV2Output, AWSError> | undefined
+    let ContinuationToken: string | undefined
+
+    return new FilesReadable(async () => {
+      if (request && !request.IsTruncated) return null
+
+      request = await this.s3
+        .listObjectsV2({
+          Bucket: this.options.bucket,
+          Prefix: path,
+          ContinuationToken
+        })
+        .promise()
+
+      ContinuationToken = request.NextContinuationToken
+      const contents = request.Contents
+
+      return (
+        contents &&
+        contents.map(f => ({
+          name: <string>f.Key,
+          size: f.Size,
+          updatedAt: f.LastModified,
+          md5Hash: f.ETag,
+          raw: f as object
+        }))
+      )
+    })
   }
 
   async readFile(filePath: string): Promise<Buffer> {
@@ -59,7 +91,9 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
 
   async createWriteStream(filePath: string): Promise<Writable> {
     const pass = new PassThrough()
-    this.s3.upload({ Bucket: this.options.bucket, Key: filePath, Body: pass })
+    this.s3
+      .upload({ Bucket: this.options.bucket, Key: filePath, Body: pass })
+      .promise()
     return pass
   }
 

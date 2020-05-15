@@ -31,9 +31,14 @@ import { LocalStorage, getStorageManager } from 'storage-core'
   console.log(await ls3.readFile('local-write/test3.txt'))
 
   const ws = await ls3.createWriteStream('local-write/stream.txt')
-  ws.push('writing\n')
-  ws.push('using\n')
-  ws.push('a\n')
-  ws.push('stream\n')
-  ws.push(null)
+  ws.write('writing\n')
+  ws.write('using\n')
+  ws.write('a\n')
+  ws.write('stream\n')
+  ws.end()
+
+  // Read created files from directory
+  for await (let path of ls.getFilesStream('local-write')) {
+    console.log(path.name)
+  }
 })()

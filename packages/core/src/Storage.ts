@@ -1,5 +1,4 @@
 import { Readable, Writable } from 'stream'
-
 export interface StorageOptions {}
 
 export abstract class Storage<O extends StorageOptions = any> {
@@ -9,10 +8,7 @@ export abstract class Storage<O extends StorageOptions = any> {
     this.options = options
   }
 
-  /**
-   * Returns all files in storage
-   */
-  abstract getFilePaths(path?: string): Promise<string[]>
+  abstract getFilesStream(path?: string): Readable
 
   abstract readFile(filePath: string): Promise<Buffer>
 

@@ -1,4 +1,4 @@
-import { Storage } from 'storage-core'
+import { Storage, FilesReadable } from 'storage-core'
 import {
   BlobServiceClient,
   StorageSharedKeyCredential,
@@ -18,7 +18,8 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
       options.accountKey
     )
     this.blobClient = new BlobServiceClient(
-      options.endpoint || `https://${options.accountName}.blob.core.windows.net`,
+      options.endpoint ||
+        `https://${options.accountName}.blob.core.windows.net`,
       credentials
     )
     this.containerClient = this.blobClient.getContainerClient(options.container)
@@ -31,8 +32,23 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     return props.contentLength || 0
   }
 
-  getFilePaths(_?: string | undefined): Promise<string[]> {
-    throw new Error('Method not implemented.')
+  getFilesStream(path?: string | undefined): Readable {
+    let iterator = this.containerClient.listBlobsFlat({ prefix: path })
+
+    return new FilesReadable(async () => {
+      const { value } = await iterator.next()
+      return (
+        value && [
+          {
+            name: value.name,
+            size: value.properties.contentLength,
+            createdAt: value.properties.createdOn,
+            lastModified: value.properties.lastModified,
+            raw: value
+          }
+        ]
+      )
+    })
   }
 
   readFile(filePath: string): Promise<Buffer> {

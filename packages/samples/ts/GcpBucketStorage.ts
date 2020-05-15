@@ -19,7 +19,6 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
     )
   }
 
-  console.log(config)
   // Create gcp storage
   const ls = new GcpBucketStorage(config)
 
@@ -28,7 +27,6 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   console.log(await ls.readFile('gcp-write/test.txt'))
 
   // Using storage manager
-
   // Register gcp storage
   getStorageFactory().register('gcp-bucket', GcpBucketStorage)
 
@@ -49,4 +47,9 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   ws.write('a\n')
   ws.write('stream\n')
   ws.end()
+
+  // Read created files from directory
+  for await (let path of ls.getFilesStream('gcp-write')) {
+    console.log(path.name)
+  }
 })()

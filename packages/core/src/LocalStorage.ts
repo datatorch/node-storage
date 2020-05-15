@@ -4,6 +4,8 @@ import pathModule from 'path'
 import globby from 'globby'
 
 import { Storage, StorageOptions } from './Storage'
+import { FilesTransform } from './utils'
+import { Readable } from 'stream'
 
 export interface LocalStorageOptions extends StorageOptions {
   path: string
@@ -28,9 +30,18 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
 
   async terminate(): Promise<void> {}
 
-  async getFilePaths(path?: string): Promise<string[]> {
+  async getFiles(path?: string): Promise<string[]> {
     const fullPath = this.fullPath(path)
     return globby(`${fullPath}/**/*`, { onlyFiles: true })
+  }
+
+  getFilesStream(path?: string): Readable {
+    const fullPath = this.fullPath(path)
+    const trans = new FilesTransform((path: string) => ({
+      name: path,
+      raw: {}
+    }))
+    return globby.stream(`${fullPath}/**/**`, { onlyFiles: true }).pipe(trans)
   }
 
   async getFileSize(filePath: string): Promise<number> {

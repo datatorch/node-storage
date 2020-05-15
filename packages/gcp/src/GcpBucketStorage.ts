@@ -1,13 +1,15 @@
-import { Storage } from 'storage-core'
+import { Storage, FilesTransform } from 'storage-core'
 import {
   Storage as GoogleStorage,
   Bucket as GoogleBucket,
   CreateReadStreamOptions,
   CreateWriteStreamOptions,
-  StorageOptions
+  StorageOptions,
+  File
 } from '@google-cloud/storage'
 
 import { GcpBucketStorageOptions } from './GcpBucketStorageOptions'
+import { Readable, Writable } from 'stream'
 
 export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   googleStorage: GoogleStorage
@@ -30,11 +32,21 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
     this.bucket = this.googleStorage.bucket(bucket)
   }
 
-  async getFilePaths(path?: string | undefined): Promise<string[]> {
-    const [files] = await this.bucket.getFiles({
-      directory: path
-    })
+  async getFiles(path?: string): Promise<string[]> {
+    const [files] = await this.bucket.getFiles({ directory: path })
     return files.map(f => f.name)
+  }
+
+  getFilesStream(path?: string): Readable {
+    const trans = new FilesTransform((f: File) => ({
+      name: f.name,
+      size: f.metadata.size,
+      md5Hash: f.metadata.md5Hash,
+      createdAt: new Date(f.metadata.timeCreated),
+      updatedAt: new Date(f.metadata.updated),
+      raw: f.metadata
+    }))
+    return this.bucket.getFilesStream({ directory: path }).pipe(trans)
   }
 
   async getFileSize(filePath: string): Promise<number> {
@@ -58,11 +70,14 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   async createWriteStream(
     filePath: string,
     options?: CreateWriteStreamOptions
-  ) {
+  ): Promise<Writable> {
     return this.bucket.file(filePath).createWriteStream(options)
   }
 
-  async createReadStream(filePath: string, options?: CreateReadStreamOptions) {
+  async createReadStream(
+    filePath: string,
+    options?: CreateReadStreamOptions
+  ): Promise<Readable> {
     const file = this.bucket.file(filePath)
     return file.createReadStream(options)
   }

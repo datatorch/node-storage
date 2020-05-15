@@ -45,4 +45,9 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   ws.write('a\n')
   ws.write('stream\n')
   ws.end()
+
+  // Read created files from directory
+  for await (let path of ls.getFilesStream('azure-write')) {
+    console.log(path.name)
+  }
 })()
