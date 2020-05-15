@@ -1,14 +1,5 @@
 import { Readable, Transform } from 'stream'
-
-export interface ListFile {
-  name: string
-  size?: number
-  md5Hash?: string
-  createdAt?: Date
-  updatedAt?: Date
-  raw: object
-}
-
+import { ListFile } from '../Files'
 export class FilesTransform extends Transform {
   constructor(private transform: (object: any) => ListFile) {
     super({ objectMode: true })

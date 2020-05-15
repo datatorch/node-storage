@@ -6,6 +6,7 @@ import globby from 'globby'
 import { Storage, StorageOptions } from './Storage'
 import { FilesTransform } from './utils'
 import { Readable } from 'stream'
+import { ListResult } from './Files'
 
 export interface LocalStorageOptions extends StorageOptions {
   path: string
@@ -30,18 +31,36 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
 
   async terminate(): Promise<void> {}
 
-  async getFiles(path?: string): Promise<string[]> {
+  async getTopLevel(path?: string): Promise<ListResult[]> {
     const fullPath = this.fullPath(path)
-    return globby(`${fullPath}/**/*`, { onlyFiles: true })
+    console.log(fullPath)
+    const files: any[] = await globby(`${fullPath}/*`, {
+      onlyFiles: false,
+      objectMode: true
+    })
+    return files.map(f => ({
+      path: f.path,
+      name: pathModule.basename(f.path),
+      raw: f,
+      isFile: f.dirent.isFile()
+    }))
   }
 
   getFilesStream(path?: string): Readable {
     const fullPath = this.fullPath(path)
-    const trans = new FilesTransform((path: string) => ({
-      name: path,
-      raw: {}
+    const trans = new FilesTransform((f: any) => ({
+      name: pathModule.basename(f.path),
+      path: f.path,
+      size: f.stats.size,
+      raw: f
     }))
-    return globby.stream(`${fullPath}/**/**`, { onlyFiles: true }).pipe(trans)
+    return globby
+      .stream(`${fullPath}/**/*`, {
+        objectMode: true,
+        onlyFiles: true,
+        stats: true
+      })
+      .pipe(trans)
   }
 
   async getFileSize(filePath: string): Promise<number> {

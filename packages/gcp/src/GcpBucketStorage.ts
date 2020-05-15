@@ -1,4 +1,4 @@
-import { Storage, FilesTransform } from 'storage-core'
+import { Storage, FilesTransform, ListResult } from 'storage-core'
 import {
   Storage as GoogleStorage,
   Bucket as GoogleBucket,
@@ -32,6 +32,10 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
     this.bucket = this.googleStorage.bucket(bucket)
   }
 
+  getTopLevel(_?: string): Promise<ListResult[]> {
+    throw new Error('Method not implemented.')
+  }
+
   async getFiles(path?: string): Promise<string[]> {
     const [files] = await this.bucket.getFiles({ directory: path })
     return files.map(f => f.name)
@@ -40,6 +44,7 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   getFilesStream(path?: string): Readable {
     const trans = new FilesTransform((f: File) => ({
       name: f.name,
+      path: f.name,
       size: f.metadata.size,
       md5Hash: f.metadata.md5Hash,
       createdAt: new Date(f.metadata.timeCreated),

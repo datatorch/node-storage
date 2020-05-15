@@ -39,6 +39,10 @@ import { LocalStorage, getStorageManager } from 'storage-core'
 
   // Read created files from directory
   for await (let path of ls.getFilesStream('local-write')) {
-    console.log(path.name)
+    console.log(`${path.path} [${path.size}]`)
+  }
+
+  for (let result of await ls.getTopLevel('local-write')) {
+    console.log(`${result.isFile} | ${result.name}`)
   }
 })()

@@ -1,4 +1,5 @@
 import { Readable, Writable } from 'stream'
+import { ListResult } from './Files'
 export interface StorageOptions {}
 
 export abstract class Storage<O extends StorageOptions = any> {
@@ -7,6 +8,8 @@ export abstract class Storage<O extends StorageOptions = any> {
   constructor(options: O) {
     this.options = options
   }
+
+  abstract getTopLevel(path?: string): Promise<ListResult[]>
 
   abstract getFilesStream(path?: string): Readable
 

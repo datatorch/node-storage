@@ -6,6 +6,7 @@ import {
 } from '@azure/storage-blob'
 import { AzureBlobStorageOptions } from './AzureBlobStorageOptions'
 import { Readable, PassThrough } from 'stream'
+import { ListResult } from 'storage-core'
 
 export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
   blobClient: BlobServiceClient
@@ -25,6 +26,10 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     this.containerClient = this.blobClient.getContainerClient(options.container)
   }
 
+  getTopLevel(_?: string): Promise<ListResult[]> {
+    throw new Error('Method not implemented.')
+  }
+
   async getFileSize(path: string): Promise<number> {
     const props = await this.containerClient
       .getBlockBlobClient(path)
@@ -40,6 +45,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
       return (
         value && [
           {
+            path: value.name,
             name: value.name,
             size: value.properties.contentLength,
             createdAt: value.properties.createdOn,

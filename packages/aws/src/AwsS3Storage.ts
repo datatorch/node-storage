@@ -1,4 +1,4 @@
-import { Storage, FilesReadable } from 'storage-core'
+import { Storage, FilesReadable, ListResult } from 'storage-core'
 import { S3, AWSError } from 'aws-sdk'
 
 import { Readable, PassThrough, Writable } from 'stream'
@@ -13,7 +13,7 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
     this.s3 = new S3({ ...options })
   }
 
-  getFiles(_?: string | undefined): Promise<string[]> {
+  getTopLevel(_?: string): Promise<ListResult[]> {
     throw new Error('Method not implemented.')
   }
 
@@ -38,6 +38,7 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
       return (
         contents &&
         contents.map(f => ({
+          path: <string>f.Key,
           name: <string>f.Key,
           size: f.Size,
           updatedAt: f.LastModified,
@@ -72,7 +73,11 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
 
   async writeFile(filePath: string, data: string | Buffer): Promise<void> {
     await this.s3
-      .putObject({ Bucket: this.options.bucket, Key: filePath, Body: data })
+      .putObject({
+        Bucket: this.options.bucket,
+        Key: filePath,
+        Body: data
+      })
       .promise()
   }
 
