@@ -50,4 +50,8 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   for await (let path of ls.getFilesStream('azure-write')) {
     console.log(path.name)
   }
+
+  for (let result of await ls.getTopLevel('azure-write')) {
+    console.log(`${result.isFile} | ${result.path}`)
+  }
 })()

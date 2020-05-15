@@ -38,8 +38,13 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
       onlyDirectories: false,
       objectMode: true
     })
+
+    const rootPath = pathModule.resolve(this.fullPath())
+    const formatPath = (path: string) =>
+      pathModule.resolve(path).replace(`${rootPath}/`, '')
+
     return files.map(f => ({
-      path: f.path,
+      path: formatPath(f.path),
       name: pathModule.basename(f.path),
       raw: f,
       isFile: f.dirent.isFile()
@@ -48,9 +53,14 @@ export class LocalStorage extends Storage<LocalStorageOptions> {
 
   getFilesStream(path?: string): Readable {
     const fullPath = this.fullPath(path)
+
+    const rootPath = pathModule.resolve(this.fullPath())
+    const formatPath = (path: string) =>
+      pathModule.resolve(path).replace(`${rootPath}/`, '')
+
     const trans = new FilesTransform((f: any) => ({
       name: pathModule.basename(f.path),
-      path: f.path,
+      path: formatPath(f.path),
       size: f.stats.size,
       raw: f
     }))

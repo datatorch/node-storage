@@ -43,6 +43,6 @@ import { LocalStorage, getStorageManager } from 'storage-core'
   }
 
   for (let result of await ls.getTopLevel('local-write')) {
-    console.log(`${result.isFile} | ${result.name}`)
+    console.log(`${result.isFile} | ${result.path}`)
   }
 })()

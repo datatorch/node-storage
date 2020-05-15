@@ -1,4 +1,5 @@
 import { Storage, FilesReadable } from 'storage-core'
+import pathModule from 'path'
 import {
   BlobServiceClient,
   StorageSharedKeyCredential,
@@ -26,8 +27,32 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     this.containerClient = this.blobClient.getContainerClient(options.container)
   }
 
-  getTopLevel(_?: string): Promise<ListResult[]> {
-    throw new Error('Method not implemented.')
+  async getTopLevel(path?: string): Promise<ListResult[]> {
+    const iterator = this.containerClient
+      .listBlobsByHierarchy('/', { prefix: path ? `${path}/` : '' })
+      .byPage({ maxPageSize: 1000 })
+
+    const { value } = await iterator.next()
+    const { blobItems, blobPrefixes } = value.segment
+
+    const dirs: ListResult[] = blobPrefixes.map((b: any) => ({
+      name: pathModule.basename(b.name),
+      path: b.name.slice(0, -1),
+      isFile: false,
+      raw: b
+    }))
+
+    const files: ListResult[] = blobItems.map((b: any) => ({
+      name: pathModule.basename(b.name),
+      path: b.name,
+      size: b.properties.contentLength,
+      createdAt: b.properties.createdOn,
+      lastModified: b.properties.lastModified,
+      isFile: true,
+      raw: b
+    }))
+
+    return dirs.concat(files)
   }
 
   async getFileSize(path: string): Promise<number> {
@@ -39,7 +64,6 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
 
   getFilesStream(path?: string | undefined): Readable {
     let iterator = this.containerClient.listBlobsFlat({ prefix: path })
-
     return new FilesReadable(async () => {
       const { value } = await iterator.next()
       return (
