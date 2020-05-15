@@ -1,6 +1,6 @@
 {
   "name": "storage-azure",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Azure blob storage implementation",
   "author": "Justin Brooks <justin@datatorch.io>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
