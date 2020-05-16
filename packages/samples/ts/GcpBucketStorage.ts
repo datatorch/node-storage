@@ -52,4 +52,8 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
   for await (let path of ls.getFilesStream('gcp-write')) {
     console.log(path.name)
   }
+
+  for (let result of await ls.getTopLevel('gcp-write')) {
+    console.log(`${result.isFile} | ${result.path}`)
+  }
 })()

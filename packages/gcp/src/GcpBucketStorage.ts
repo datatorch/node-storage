@@ -1,4 +1,6 @@
 import { Storage, FilesTransform, ListResult } from 'storage-core'
+import pathModule from 'path'
+
 import {
   Storage as GoogleStorage,
   Bucket as GoogleBucket,
@@ -10,6 +12,17 @@ import {
 
 import { GcpBucketStorageOptions } from './GcpBucketStorageOptions'
 import { Readable, Writable } from 'stream'
+
+const formatFile = (f: File) => ({
+  name: pathModule.basename(f.name),
+  path: f.name,
+  size: f.metadata.size,
+  md5Hash: f.metadata.md5Hash,
+  createdAt: new Date(f.metadata.timeCreated),
+  updatedAt: new Date(f.metadata.updated),
+  isFile: true,
+  raw: f.metadata
+})
 
 export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   googleStorage: GoogleStorage
@@ -32,8 +45,29 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
     this.bucket = this.googleStorage.bucket(bucket)
   }
 
-  getTopLevel(_?: string): Promise<ListResult[]> {
-    throw new Error('Method not implemented.')
+  getTopLevel(path?: string): Promise<ListResult[]> {
+    return new Promise((resolve, reject) => {
+      this.bucket.getFiles(
+        {
+          autoPaginate: false,
+          directory: path,
+          delimiter: '/'
+        },
+        (err, files, _, { prefixes } = {}) => {
+          if (err) reject(err)
+
+          const dirs: ListResult[] = (prefixes || []).map((d: string) => ({
+            name: pathModule.basename(d),
+            path: d.slice(0, -1),
+            isFile: false,
+            raw: d
+          }))
+          const f: ListResult[] = (files || []).map(formatFile)
+
+          resolve(dirs.concat(f))
+        }
+      )
+    })
   }
 
   async getFiles(path?: string): Promise<string[]> {
@@ -42,15 +76,7 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   }
 
   getFilesStream(path?: string): Readable {
-    const trans = new FilesTransform((f: File) => ({
-      name: f.name,
-      path: f.name,
-      size: f.metadata.size,
-      md5Hash: f.metadata.md5Hash,
-      createdAt: new Date(f.metadata.timeCreated),
-      updatedAt: new Date(f.metadata.updated),
-      raw: f.metadata
-    }))
+    const trans = new FilesTransform(formatFile)
     return this.bucket.getFilesStream({ directory: path }).pipe(trans)
   }
 
