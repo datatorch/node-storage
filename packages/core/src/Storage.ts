@@ -53,6 +53,8 @@ export abstract class Storage<O extends StorageOptions = any> {
 
   public pathAbs(path: string) {
     const pathNormalized = path.charAt(0) === '/' ? path.substring(1) : path
-    return `${this.directoryNormalized}/${pathNormalized}`
+    return this.directoryNormalized.length > 0
+      ? `${this.directoryNormalized}/${pathNormalized}`
+      : pathNormalized
   }
 }
