@@ -1,2 +1,2 @@
-export { AzureBlobStorageOptions } from './AzureBlobStorageOptions'
-export { AzureBlobStorage } from './AzureBlobStorage'
+export * from './AzureBlobStorage'
+export * from './AzureStorageAccount'

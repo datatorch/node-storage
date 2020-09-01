@@ -1,32 +1,34 @@
-import { Storage, FilesReadable } from 'storage-core'
+import { Storage, FilesReadable, PathAbs, StorageOptions } from 'storage-core'
 import pathModule from 'path'
-import {
-  BlobServiceClient,
-  StorageSharedKeyCredential,
-  ContainerClient
-} from '@azure/storage-blob'
-import { AzureBlobStorageOptions } from './AzureBlobStorageOptions'
+import { BlobServiceClient, ContainerClient } from '@azure/storage-blob'
 import { Readable, PassThrough } from 'stream'
 import { ListResult } from 'storage-core'
+import {
+  AzureStorageAccount,
+  AzureStorageAccountOptions
+} from './AzureStorageAccount'
+
+export interface AzureBlobStorageOptions
+  extends StorageOptions,
+    AzureStorageAccountOptions {
+  container: string
+}
 
 export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
   blobClient: BlobServiceClient
   containerClient: ContainerClient
 
-  constructor(options: AzureBlobStorageOptions) {
+  constructor(
+    options: AzureBlobStorageOptions,
+    provider?: AzureStorageAccount
+  ) {
     super(options)
-    const credentials = new StorageSharedKeyCredential(
-      options.accountName,
-      options.accountKey
-    )
-    this.blobClient = new BlobServiceClient(
-      options.endpoint ||
-        `https://${options.accountName}.blob.core.windows.net`,
-      credentials
-    )
+
+    this.blobClient = (provider ?? new AzureStorageAccount(options)).blobClient
     this.containerClient = this.blobClient.getContainerClient(options.container)
   }
 
+  @PathAbs()
   async getTopLevel(path?: string): Promise<ListResult[]> {
     const iterator = this.containerClient
       .listBlobsByHierarchy('/', { prefix: path ? `${path}/` : '' })
@@ -54,6 +56,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     return dirs.concat(files)
   }
 
+  @PathAbs()
   async getFileSize(path: string): Promise<number> {
     const props = await this.containerClient
       .getBlockBlobClient(path)
@@ -61,6 +64,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     return props.contentLength || 0
   }
 
+  @PathAbs()
   getFilesStream(path?: string | undefined): Readable {
     let iterator = this.containerClient.listBlobsFlat({ prefix: path })
     return new FilesReadable(async () => {
@@ -80,20 +84,24 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     })
   }
 
+  @PathAbs()
   readFile(filePath: string): Promise<Buffer> {
     return this.containerClient.getBlockBlobClient(filePath).downloadToBuffer()
   }
 
+  @PathAbs()
   async writeFile(filePath: string, data: string | Buffer): Promise<void> {
     await this.containerClient
       .getBlockBlobClient(filePath)
       .upload(data, data.length)
   }
 
+  @PathAbs()
   async deleteFile(filePath: string): Promise<void> {
     await this.containerClient.getBlockBlobClient(filePath).delete()
   }
 
+  @PathAbs()
   async createWriteStream(filePath: string) {
     // Failed if file is not already created
     await this.writeFile(filePath, '')
@@ -103,6 +111,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     return stream
   }
 
+  @PathAbs()
   async createReadStream(filePath: string) {
     const download = await this.containerClient
       .getBlockBlobClient(filePath)

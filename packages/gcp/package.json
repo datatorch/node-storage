@@ -23,8 +23,8 @@
   ],
   "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
   "dependencies": {
-    "@google-cloud/common": "^3.1.0",
-    "@google-cloud/storage": "^5.0.0",
+    "@google-cloud/common": "^3.3.3",
+    "@google-cloud/storage": "^5.3.0",
     "storage-core": "^0.6.2"
   },
   "keywords": [

@@ -5,6 +5,8 @@ export type FactoryStorageOption<O extends StorageOptions = any> = O & {
   type: string
 }
 
+export type FactoryProviderOptions<O = any> = O & { type: string }
+
 export class StorageFactory {
   private map = new Map<string, new (options: any) => Storage<any>>()
 

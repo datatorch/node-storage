@@ -1,4 +1,4 @@
-import { Storage, FilesTransform, ListResult } from 'storage-core'
+import { Storage, FilesTransform, ListResult, PathAbs } from 'storage-core'
 import pathModule from 'path'
 
 import {
@@ -45,6 +45,7 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
     this.bucket = this.googleStorage.bucket(bucket)
   }
 
+  @PathAbs()
   getTopLevel(path?: string): Promise<ListResult[]> {
     return new Promise((resolve, reject) => {
       this.bucket.getFiles(
@@ -70,34 +71,41 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
     })
   }
 
+  @PathAbs()
   async getFiles(path?: string): Promise<string[]> {
     const [files] = await this.bucket.getFiles({ directory: path })
     return files.map(f => f.name)
   }
 
+  @PathAbs()
   getFilesStream(path?: string): Readable {
     const trans = new FilesTransform(formatFile)
     return this.bucket.getFilesStream({ directory: path }).pipe(trans)
   }
 
+  @PathAbs()
   async getFileSize(filePath: string): Promise<number> {
     const stat = (await this.bucket.file(filePath).getMetadata()).find(r => r)
     return (stat && stat.size) || 0
   }
 
+  @PathAbs()
   async readFile(filePath: string): Promise<Buffer> {
     const [buffer] = await this.bucket.file(filePath).download()
     return buffer
   }
 
+  @PathAbs()
   async writeFile(filePath: string, data: string | Buffer): Promise<void> {
     await this.bucket.file(filePath).save(data)
   }
 
+  @PathAbs()
   async deleteFile(filePath: string): Promise<void> {
     await this.bucket.file(filePath).delete()
   }
 
+  @PathAbs()
   async createWriteStream(
     filePath: string,
     options?: CreateWriteStreamOptions
@@ -105,6 +113,7 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
     return this.bucket.file(filePath).createWriteStream(options)
   }
 
+  @PathAbs()
   async createReadStream(
     filePath: string,
     options?: CreateReadStreamOptions

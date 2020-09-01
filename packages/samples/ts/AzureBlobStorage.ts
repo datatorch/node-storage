@@ -9,6 +9,7 @@ import { getStorageManager, getStorageFactory } from 'storage-core'
  */
 ;(async () => {
   const config = {
+    directory: '/sub/dir',
     id: 'example-id',
     type: 'azure-blob',
     container: process.env.CONTAINER || '',

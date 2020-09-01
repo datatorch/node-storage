@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@types/lru-cache": "^5.1.0",
-    "globby": "^11.0.0",
-    "lru-cache": "^5.1.1"
+    "globby": "^11.0.1",
+    "lru-cache": "^6.0.0"
   },
   "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
   "keywords": [
