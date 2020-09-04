@@ -1,6 +1,6 @@
 {
   "name": "samples",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Samples",
   "author": "Justin Brooks <jsbroks@gmail.com>",
   "homepage": "https://github.com/datatorch/node-storage#readme",
@@ -10,10 +10,10 @@
     "url": "git+https://github.com/datatorch/node-storage.git"
   },
   "dependencies": {
-    "storage-aws": "^0.7.1",
-    "storage-azure": "^0.7.1",
-    "storage-core": "^0.7.1",
-    "storage-gcp": "^0.7.1",
+    "storage-aws": "^0.7.2",
+    "storage-azure": "^0.7.2",
+    "storage-core": "^0.7.2",
+    "storage-gcp": "^0.7.2",
     "ts-node": "^9.0.0"
   }
 }
