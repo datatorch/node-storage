@@ -28,7 +28,7 @@ export abstract class Storage<O extends StorageOptions = any> {
 
   constructor(options: O) {
     this.options = options
-    const directory = this.options.directory ?? ''
+    const directory = this.options.directory || ''
     this.directoryNormalized =
       directory.charAt(0) === '/' ? directory.substring(1) : directory
   }

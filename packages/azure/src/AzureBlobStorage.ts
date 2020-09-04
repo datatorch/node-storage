@@ -24,7 +24,7 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
   ) {
     super(options)
 
-    this.blobClient = (provider ?? new AzureStorageAccount(options)).blobClient
+    this.blobClient = (provider || new AzureStorageAccount(options)).blobClient
     this.containerClient = this.blobClient.getContainerClient(options.container)
   }
 

@@ -5,7 +5,7 @@ export abstract class StorageProvider<T extends Storage = any> {
   readonly manager: StorageManager
 
   constructor(manager?: StorageManager) {
-    this.manager = manager ?? getStorageManager()
+    this.manager = manager || getStorageManager()
   }
 
   abstract getStorage(name: string): Promise<T>
