@@ -1,4 +1,4 @@
-import { LocalStorage, getStorageManager } from 'storage-core'
+import { LocalStorage, getStorageManager } from '@dtorch/storage-core'
 /**
  * Samples using LocalStorage
  *  - Read/Write

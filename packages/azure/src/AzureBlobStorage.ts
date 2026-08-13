@@ -4,7 +4,7 @@ import {
   PathAbs,
   StorageOptions,
   SignedUrlOptions
-} from 'storage-core'
+} from '@dtorch/storage-core'
 import pathModule from 'path'
 import {
   BlobServiceClient,
@@ -14,7 +14,7 @@ import {
   BlobSASPermissions
 } from '@azure/storage-blob'
 import { Readable, PassThrough } from 'stream'
-import { ListResult } from 'storage-core'
+import { ListResult } from '@dtorch/storage-core'
 import {
   AzureStorageAccount,
   AzureStorageAccountOptions

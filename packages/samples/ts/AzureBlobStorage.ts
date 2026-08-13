@@ -1,6 +1,6 @@
-import { AzureBlobStorage } from 'storage-azure'
+import { AzureBlobStorage } from '@dtorch/storage-azure'
 
-import { getStorageManager, getStorageFactory } from 'storage-core'
+import { getStorageManager, getStorageFactory } from '@dtorch/storage-core'
 /**
  * Samples using Azure Storage
  *  - Read/Write

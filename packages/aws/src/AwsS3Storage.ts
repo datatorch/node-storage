@@ -4,7 +4,7 @@ import {
   ListResult,
   PathAbs,
   SignedUrlOptions
-} from 'storage-core'
+} from '@dtorch/storage-core'
 import { S3, AWSError } from 'aws-sdk'
 import pathModule from 'path'
 

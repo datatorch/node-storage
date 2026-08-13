@@ -1,5 +1,5 @@
-import { AwsS3Storage } from 'storage-aws'
-import { getStorageManager, getStorageFactory } from 'storage-core'
+import { AwsS3Storage } from '@dtorch/storage-aws'
+import { getStorageManager, getStorageFactory } from '@dtorch/storage-core'
 /**
  * Samples using AWS S3 Buckets
  *  - Read/Write

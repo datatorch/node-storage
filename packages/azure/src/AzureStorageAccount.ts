@@ -2,7 +2,7 @@ import {
   BlobServiceClient,
   StorageSharedKeyCredential
 } from '@azure/storage-blob'
-import { StorageProvider } from 'storage-core'
+import { StorageProvider } from '@dtorch/storage-core'
 import { AzureBlobStorage } from './AzureBlobStorage'
 
 export interface AzureStorageAccountOptions {

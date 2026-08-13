@@ -1,5 +1,5 @@
-import { GcpBucketStorage } from 'storage-gcp'
-import { getStorageManager, getStorageFactory } from 'storage-core'
+import { GcpBucketStorage } from '@dtorch/storage-gcp'
+import { getStorageManager, getStorageFactory } from '@dtorch/storage-core'
 /**
  * Samples using google buckets
  *  - Read/Write
