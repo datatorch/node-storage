@@ -1,4 +1,10 @@
-import { Storage, FilesTransform, ListResult, PathAbs } from 'storage-core'
+import {
+  Storage,
+  FilesTransform,
+  ListResult,
+  PathAbs,
+  SignedUrlOptions
+} from 'storage-core'
 import pathModule from 'path'
 
 import {
@@ -120,6 +126,27 @@ export class GcpBucketStorage extends Storage<GcpBucketStorageOptions> {
   ): Promise<Readable> {
     const file = this.bucket.file(filePath)
     return file.createReadStream(options)
+  }
+
+  supportsSignedUrls(): boolean {
+    return true
+  }
+
+  @PathAbs()
+  async getSignedUrl(
+    filePath: string,
+    options: SignedUrlOptions
+  ): Promise<string> {
+    const [url] = await this.bucket.file(filePath).getSignedUrl({
+      version: 'v4',
+      action: 'read',
+      expires: Date.now() + options.expiresIn * 1000,
+      ...(options.contentDisposition
+        ? { responseDisposition: options.contentDisposition }
+        : {}),
+      ...(options.contentType ? { responseType: options.contentType } : {})
+    })
+    return url
   }
 
   async makeDir(_path: string): Promise<void> {}

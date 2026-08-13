@@ -1,4 +1,10 @@
-import { Storage, FilesReadable, ListResult, PathAbs } from 'storage-core'
+import {
+  Storage,
+  FilesReadable,
+  ListResult,
+  PathAbs,
+  SignedUrlOptions
+} from 'storage-core'
 import { S3, AWSError } from 'aws-sdk'
 import pathModule from 'path'
 
@@ -146,6 +152,25 @@ export class AwsS3Storage extends Storage<AwsS3StorageOptions> {
     return this.s3
       .getObject({ Bucket: this.options.bucket, Key: filePath })
       .createReadStream()
+  }
+
+  supportsSignedUrls(): boolean {
+    return true
+  }
+
+  @PathAbs()
+  getSignedUrl(filePath: string, options: SignedUrlOptions): Promise<string> {
+    return this.s3.getSignedUrlPromise('getObject', {
+      Bucket: this.options.bucket,
+      Key: filePath,
+      Expires: options.expiresIn,
+      ...(options.contentDisposition
+        ? { ResponseContentDisposition: options.contentDisposition }
+        : {}),
+      ...(options.contentType
+        ? { ResponseContentType: options.contentType }
+        : {})
+    })
   }
 
   async makeDir(_: string): Promise<void> {}

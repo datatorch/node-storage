@@ -1,6 +1,18 @@
-import { Storage, FilesReadable, PathAbs, StorageOptions } from 'storage-core'
+import {
+  Storage,
+  FilesReadable,
+  PathAbs,
+  StorageOptions,
+  SignedUrlOptions
+} from 'storage-core'
 import pathModule from 'path'
-import { BlobServiceClient, ContainerClient } from '@azure/storage-blob'
+import {
+  BlobServiceClient,
+  ContainerClient,
+  StorageSharedKeyCredential,
+  generateBlobSASQueryParameters,
+  BlobSASPermissions
+} from '@azure/storage-blob'
 import { Readable, PassThrough } from 'stream'
 import { ListResult } from 'storage-core'
 import {
@@ -119,6 +131,37 @@ export class AzureBlobStorage extends Storage<AzureBlobStorageOptions> {
     const stream = download.readableStreamBody
     if (!stream) throw new Error('Readable stream is undefined.')
     return stream as Readable
+  }
+
+  supportsSignedUrls(): boolean {
+    return true
+  }
+
+  @PathAbs()
+  async getSignedUrl(
+    filePath: string,
+    options: SignedUrlOptions
+  ): Promise<string> {
+    const { accountName, accountKey, container } = this.options
+    const credential = new StorageSharedKeyCredential(accountName, accountKey)
+    const now = Date.now()
+    const sas = generateBlobSASQueryParameters(
+      {
+        containerName: container,
+        blobName: filePath,
+        permissions: BlobSASPermissions.parse('r'),
+        // A little back-dating absorbs clock skew between signer and storage.
+        startsOn: new Date(now - 5 * 60 * 1000),
+        expiresOn: new Date(now + options.expiresIn * 1000),
+        ...(options.contentDisposition
+          ? { contentDisposition: options.contentDisposition }
+          : {}),
+        ...(options.contentType ? { contentType: options.contentType } : {})
+      },
+      credential
+    ).toString()
+    const blobUrl = this.containerClient.getBlockBlobClient(filePath).url
+    return `${blobUrl}?${sas}`
   }
 
   async makeDir(_: string): Promise<void> {}
