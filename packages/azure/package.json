@@ -21,7 +21,7 @@
   "files": [
     "dist"
   ],
-  "gitHead": "b05db75f50e3a44fd01b8c95d114f3fb5c9801c3",
+  "gitHead": "848875b37859f466e4406330538fbf569a328624",
   "dependencies": {
     "@azure/storage-blob": "12.2.0-preview.1",
     "@dtorch/storage-core": "^0.8.0"
